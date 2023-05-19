@@ -13,7 +13,7 @@ class Post(models.Model):
         on_delete=models.CASCADE,
         related_name='blog_posts'
     )
-    title = models.CharField(max_lenght=250)
+    title = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250)
     body = models.TextField()
     publish = models.DateTimeField(default=timezone.now)
