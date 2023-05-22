@@ -21,7 +21,10 @@ class Post(models.Model):
         related_name='blog_posts'
     )
     title = models.CharField(max_length=250)
-    slug = models.SlugField(max_length=250)
+    slug = models.SlugField(
+        max_length=250,
+        unique_for_date='publish'
+    )
     body = models.TextField()
     image = models.ImageField(
         upload_to='posts/%Y/%m/%d/', 
