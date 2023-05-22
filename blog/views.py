@@ -24,5 +24,5 @@ def post_detail(request, year, month, day, post):
     return render(
         request,
         'blog/post/detail.html',
-        {'post', post}
+        {'post': post}
     )
