@@ -71,6 +71,7 @@ def post_share(request, post_id):
             message = f"Read {post.title} @ {post_url}\n\n" \
                 f"{cd['name']}\'s comments: {cd['comments']}"
             send_mail(subject, message, cd['email'], [cd['to']])
+            sent = True
     else:
         form = EmialPostForm()
     return render(request, 'blog/post/share.html', {'post': post,
