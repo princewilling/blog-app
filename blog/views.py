@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Post, Comment
+from .models import Post
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
-from .forms import EmialPostForm, CommentForm
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
+from .forms import EmialPostForm, CommentForm, SearchForm
 from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
 from django.db.models import Count
@@ -116,3 +117,29 @@ def post_comment(request, post_id):
     return render(request, 'blog/post/comment.html', {'post':post, 
                                                       'form': form, 
                                                       'comment': comment})
+    
+def post_search(request):
+    form = SearchForm()
+    query = None
+    results = []
+    
+def post_search(request):
+    form = SearchForm()
+    query = None
+    results = []
+
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            search_vector = SearchVector('title', 'body')
+            search_query = SearchQuery(query)
+            results = Post.published.annotate(
+                search=search_vector,
+                rank=SearchRank(search_vector, search_query)
+            ).filter(search=search_query).order_by('-rank')
+
+    
+    return render(request, 'blog/post/search.html', {'form': form, 
+                                                     'query': query, 
+                                                     'results': results})
